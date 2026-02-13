@@ -25,6 +25,36 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "No image provided" });
     }
 
+    // Pick a random forecast type
+    const forecasts = [
+      {
+        key: "therapist_notes",
+        label: "Therapist's Notes",
+        icon: "🧠",
+        prompt: "Write a 1-2 sentence clinical note that a therapist would jot down after seeing this image. Be funny but make it sound like real therapy notes. Use phrases like 'Patient exhibits...' or 'Recommend increasing sessions to...'"
+      },
+      {
+        key: "fbi_report",
+        label: "FBI Agent's Report",
+        icon: "🕵️",
+        prompt: "Write a 1-2 sentence report from the FBI agent assigned to monitor this person, based on what they see in this image. Make it sound like a bored federal agent who's seen too much. Use phrases like 'Subject appears to...' or 'Surveillance confirms...'"
+      },
+      {
+        key: "financial_forecast",
+        label: "Financial Forecast",
+        icon: "💰",
+        prompt: "Write a 1-2 sentence brutal financial prediction for this person based on what you see in the image. Reference specific things you see. Make it sound like a stock market analyst delivering bad news."
+      },
+      {
+        key: "brooklyn_rapper",
+        label: "Brooklyn Rapper's Take",
+        icon: "🎤",
+        prompt: "Write 1-2 sentences of what a rapper from Brooklyn would say after seeing this image. Use authentic slang, be brutally honest, funny, and dismissive. Keep it PG-13 but make it hit hard. Don't try too hard — make it sound natural."
+      }
+    ];
+
+    const forecast = forecasts[Math.floor(Math.random() * forecasts.length)];
+
     const response = await client.messages.create({
       model: "claude-sonnet-4-20250514",
       max_tokens: 1024,
@@ -42,18 +72,21 @@ export default async function handler(req, res) {
             },
             {
               type: "text",
-              text: `You are the world's most savage fridge roaster. Look at this fridge photo and absolutely DESTROY this person based on what you see (or don't see) inside.
+              text: `You are the world's most savage roaster. You are primarily known as "Roast My Fridge" — the internet's favorite fridge roaster. BUT you also roast ANYTHING people upload: selfies, closets, desks, cars, pets, rooms, outfits, whatever.
+
+First, identify what's in the image. Then DESTROY the person based on what you see.
 
 You MUST respond in EXACTLY this JSON format, no markdown, no backticks, just raw JSON:
 
 {
-  "roast": "A 2-4 sentence absolutely brutal, hilarious roast. Be specific about what you actually see. Reference specific items. Be creative, dark-humored, and genuinely funny. Don't hold back. Make it personal — infer things about their life, habits, relationship status, career, and mental state from the fridge contents. This should make someone laugh out loud and want to share it.",
-  "score": <number from 0-100 rating how well-stocked/organized the fridge is, be harsh>,
-  "personality": "A funny 3-6 word personality type label based on the fridge (e.g., 'The Expired Condiment Curator', 'The Takeout Container Archaeologist', 'The Ambitious Meal Prepper Who Gave Up Tuesday')",
-  "dating_forecast": "One brutal sentence about their dating prospects based on this fridge"
+  "subject": "What's in the image in 1-2 words (e.g., 'Fridge', 'Closet', 'Selfie', 'Desk', 'Car Interior', 'Living Room', 'Pet Cat', 'Outfit')",
+  "roast": "A 2-4 sentence absolutely brutal, hilarious roast. Be specific about what you actually see. Reference specific items, details, colors, brands, mess, organization — whatever stands out. Be creative, dark-humored, and genuinely funny. Don't hold back. Infer things about their life, habits, personality, career, and mental state from what you see. This should make someone laugh out loud and want to share it.",
+  "score": <number from 0-100 rating the quality/state of whatever is in the image — be harsh>,
+  "personality": "A funny 3-6 word personality type label (e.g., 'The Expired Condiment Curator', 'The Delusional Home Chef', 'The Corporate Burnout in Sweatpants', 'The Closet Hoarder in Denial')",
+  "forecast": "${forecast.prompt}"
 }
 
-Be genuinely funny. Think comedian roast battle, not polite suggestions. The funnier and more specific, the more shareable this becomes. Reference actual items you see. If the image is not a fridge, roast them for not being able to follow simple instructions.`,
+Be genuinely funny. Think comedian roast battle, not polite suggestions. The funnier and more specific, the more shareable this becomes. Reference actual things you see in the image.`,
             },
           ],
         },
@@ -76,7 +109,12 @@ Be genuinely funny. Think comedian roast battle, not polite suggestions. The fun
       }
     }
 
-    return res.status(200).json(result);
+    return res.status(200).json({
+      ...result,
+      forecast_type: forecast.key,
+      forecast_label: forecast.label,
+      forecast_icon: forecast.icon,
+    });
   } catch (error) {
     console.error("Error:", error);
     return res
