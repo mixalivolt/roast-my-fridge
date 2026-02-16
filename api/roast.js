@@ -25,35 +25,13 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "No image provided" });
     }
 
-    // Pick a random forecast type
-    const forecasts = [
-      {
-        key: "therapist_notes",
-        label: "Therapist's Notes",
-        icon: "🧠",
-        prompt: "Write ONE short sentence as a therapist's clinical note after seeing this image. Sound like real therapy notes. Example tone: 'Patient exhibits...' or 'Recommend increasing sessions to...'"
-      },
-      {
-        key: "fbi_report",
-        label: "FBI Agent's Report",
-        icon: "🕵️",
-        prompt: "Write ONE short sentence as an FBI agent's surveillance report on this person based on the image. Sound like a bored federal agent. Example tone: 'Subject appears to...' or 'Surveillance confirms...'"
-      },
-      {
-        key: "financial_forecast",
-        label: "Financial Forecast",
-        icon: "💰",
-        prompt: "Write ONE short sentence predicting this person's financial future based on the image. Sound like a stock market analyst. Reference something specific you see."
-      },
-      {
-        key: "brooklyn_rapper",
-        label: "Brooklyn Rapper's Take",
-        icon: "🎤",
-        prompt: "Write ONE short sentence of what a Brooklyn rapper would say seeing this. Authentic slang, PG-13, don't try too hard — keep it natural and dismissive."
-      }
-    ];
+    const forecast = {
+      key: "financial_forecast",
+      label: "Financial Forecast",
+      icon: "💰",
+      prompt: "Write ONE short sentence predicting this person's financial future based on the image. Sound like a stock market analyst. Reference something specific you see."
+    };
 
-    // Pick a random vibe to keep roasts varied
     const vibes = [
       "Roast them like a stand-up comedian doing crowd work.",
       "Roast them like a disappointed but loving grandparent.",
@@ -63,12 +41,26 @@ export default async function handler(req, res) {
       "Roast them like a sarcastic best friend who's had enough.",
     ];
 
-    const forecast = forecasts[Math.floor(Math.random() * forecasts.length)];
     const vibe = vibes[Math.floor(Math.random() * vibes.length)];
+
+    // Random angles to force unique roasts every time
+    const angles = [
+      "Focus on the ONE most absurd detail you see.",
+      "Imagine what this person's Google search history looks like based on this image.",
+      "Roast them based on what this image says about their ambitions vs reality.",
+      "Focus on what's MISSING from this image that should be there.",
+      "Roast them based on the energy this image radiates.",
+      "Pick the most expensive-looking thing in the image and build the roast around it.",
+      "Roast them based on what this image says about their morning routine.",
+      "Focus on the chaos. If there's no chaos, roast how suspiciously clean it is.",
+    ];
+    const angle = angles[Math.floor(Math.random() * angles.length)];
+    const seed = Math.floor(Math.random() * 100000);
 
     const response = await client.messages.create({
       model: "claude-sonnet-4-20250514",
       max_tokens: 1024,
+      temperature: 1,
       messages: [
         {
           role: "user",
@@ -90,9 +82,11 @@ YOUR PERSONALITY: You're like that one friend who's effortlessly funny — quick
 IMPORTANT RULES:
 - Keep roasts to 1-2 sentences MAX. Punchy. No paragraphs. Hit hard and get out.
 - Be SPECIFIC — reference actual things you see in the image. Colors, brands, items, mess, details.
-- NEVER repeat common roast patterns. Every roast should feel fresh and unique.
+- NEVER repeat common roast patterns. Every roast must be completely unique and fresh.
 - When you see something genuinely positive (healthy food, clean space, good outfit, cute pet), flip it — be sarcastically impressed, exaggerate the positivity until it's funny. Example: "Oh WOW look at you with the organic kale and the filtered water, you absolute Pinterest board of a human. Save some wellness for the rest of us."
 - Your vibe for THIS roast: ${vibe}
+- Your angle for THIS roast: ${angle}
+- Randomness seed (use this to vary your output): ${seed}
 - Don't be mean-spirited or hurtful. Be the kind of savage that makes people screenshot it and send to their friends because they're laughing, not crying.
 
 Respond in EXACTLY this JSON format, no markdown, no backticks, just raw JSON:
