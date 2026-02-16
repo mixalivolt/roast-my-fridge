@@ -635,12 +635,16 @@
     });
 
     function handleFile(file) {
+      // Show loading state while processing
+      uploadZone.classList.add('has-image');
+      uploadZone.innerHTML = '<p class="upload-text">Processing photo...</p>';
+
       const reader = new FileReader();
       reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-          // Resize to max 800px on longest side
-          const MAX = 800;
+          // Resize to max 600px on longest side (faster upload, still detailed enough)
+          const MAX = 600;
           let w = img.width, h = img.height;
           if (w > h) { if (w > MAX) { h = h * MAX / w; w = MAX; } }
           else { if (h > MAX) { w = w * MAX / h; h = MAX; } }
@@ -650,12 +654,11 @@
           canvas.height = h;
           canvas.getContext('2d').drawImage(img, 0, 0, w, h);
 
-          const compressed = canvas.toDataURL('image/jpeg', 0.7);
+          const compressed = canvas.toDataURL('image/jpeg', 0.6);
           imageData = compressed.split(',')[1];
           imageMediaType = 'image/jpeg';
 
           // Show preview
-          uploadZone.classList.add('has-image');
           uploadZone.innerHTML = `
             <img src="${compressed}" class="preview-img" alt="Your upload">
             <span class="change-photo">tap to change photo</span>
