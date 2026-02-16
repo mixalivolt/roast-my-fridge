@@ -3,562 +3,365 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Roast My Fridge 🔥 — AI judges your fridge and your life choices | roastmyfridge.lol</title>
-  <meta name="description" content="Upload a photo of your fridge. AI will roast your entire existence based on what's inside. Share your score with friends.">
-  <meta property="og:title" content="Roast My Fridge 🔥">
-  <meta property="og:description" content="Upload a photo of your fridge. AI will destroy you based on what's inside.">
+  <title>Roast My Fridge — Upload any image and let AI roast it</title>
+  <meta name="description" content="Upload any image. AI will roast it. Simple as that.">
+  <meta property="og:title" content="Roast My Fridge">
+  <meta property="og:description" content="Upload any image and let AI roast it.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Roast My Fridge 🔥">
-  <meta name="twitter:description" content="Upload a photo of your fridge. AI will destroy you based on what's inside.">
+  <meta name="twitter:title" content="Roast My Fridge">
+  <meta name="twitter:description" content="Upload any image and let AI roast it.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --fire: #FF4D00;
-      --ember: #FF8A00;
-      --lava: #FF2D2D;
-      --ash: #1A1A1A;
-      --smoke: #2A2A2A;
-      --charcoal: #0D0D0D;
-      --cool: #B0B0B0;
-      --ice: #E8E8E8;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Outfit', sans-serif;
-      background: var(--charcoal);
-      color: var(--ice);
+      font-family: 'Source Sans 3', -apple-system, sans-serif;
+      background: #FFFFFF;
+      color: #202122;
       min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* FIRE BACKGROUND EFFECT */
-    body::before {
-      content: '';
-      position: fixed;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: 
-        radial-gradient(ellipse at 20% 50%, rgba(255, 77, 0, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(255, 45, 45, 0.06) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 80%, rgba(255, 138, 0, 0.05) 0%, transparent 50%);
-      animation: fireGlow 8s ease-in-out infinite alternate;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    @keyframes fireGlow {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(-2%, -1%) scale(1.05); }
-    }
-
-    /* NOISE TEXTURE */
-    body::after {
-      content: '';
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
+      border-top: 3px solid #1a1a1a;
     }
 
     .container {
-      position: relative;
-      z-index: 1;
-      max-width: 560px;
+      max-width: 640px;
       margin: 0 auto;
-      padding: 40px 20px 60px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding: 40px 24px 80px;
     }
 
-    /* HEADER */
-    .logo-link {
-      text-decoration: none;
-      cursor: pointer;
+    .header {
+      border-bottom: 1px solid #a2a9b1;
+      padding-bottom: 8px;
+      margin-bottom: 24px;
     }
+
+    .logo-link { text-decoration: none; color: inherit; }
 
     .logo {
-      font-size: 3.2rem;
-      font-weight: 900;
-      text-align: center;
-      line-height: 1;
-      margin-bottom: 4px;
-      letter-spacing: -2px;
-      background: linear-gradient(135deg, var(--fire), var(--ember), var(--lava));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: logoIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #000;
     }
 
     .tagline {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.82rem;
-      color: var(--cool);
-      text-align: center;
-      margin-bottom: 40px;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+      font-size: 0.95rem;
+      color: #54595d;
+      margin-top: 4px;
+      font-style: italic;
     }
 
-    @keyframes logoIn {
-      from { opacity: 0; transform: scale(0.8) translateY(20px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
+    .disclaimer {
+      font-size: 0.75rem;
+      color: #72777d;
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: #f8f9fa;
+      border: 1px solid #eaecf0;
+      border-radius: 2px;
+      line-height: 1.5;
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
+    .section-heading {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: #000;
+      border-bottom: 1px solid #a2a9b1;
+      padding-bottom: 4px;
+      margin-top: 28px;
+      margin-bottom: 16px;
     }
 
-    /* UPLOAD AREA */
     .upload-zone {
       width: 100%;
-      border: 2px dashed rgba(255, 77, 0, 0.3);
-      border-radius: 20px;
-      padding: 50px 30px;
+      border: 1px dashed #a2a9b1;
+      border-radius: 2px;
+      padding: 40px 24px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s ease;
-      background: rgba(255, 77, 0, 0.03);
-      position: relative;
-      overflow: hidden;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+      transition: all 0.2s ease;
+      background: #f8f9fa;
     }
 
-    .upload-zone:hover {
-      border-color: var(--fire);
-      background: rgba(255, 77, 0, 0.06);
-      transform: translateY(-2px);
-    }
+    .upload-zone:hover { border-color: #36c; background: #eaf3ff; }
+    .upload-zone.dragover { border-color: #36c; background: #eaf3ff; }
+    .upload-zone.has-image { padding: 12px; background: #f8f9fa; }
 
-    .upload-zone.dragover {
-      border-color: var(--ember);
-      background: rgba(255, 138, 0, 0.1);
-      transform: scale(1.02);
-    }
-
-    .upload-zone.has-image {
-      padding: 16px;
-      border-color: var(--fire);
-    }
-
-    .upload-icon {
-      font-size: 4rem;
-      margin-bottom: 12px;
-      display: block;
-      filter: grayscale(0.3);
-    }
-
-    .upload-text {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--ice);
-      margin-bottom: 6px;
-    }
-
-    .upload-subtext {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--cool);
-    }
-
-    .upload-zone input[type="file"] {
-      display: none;
-    }
+    .upload-icon { font-size: 2.5rem; margin-bottom: 8px; display: block; }
+    .upload-text { font-size: 0.95rem; color: #202122; }
+    .upload-subtext { font-size: 0.82rem; color: #72777d; margin-top: 4px; }
+    .upload-zone input[type="file"] { display: none; }
 
     .preview-img {
       max-width: 100%;
       max-height: 300px;
-      border-radius: 12px;
+      border-radius: 2px;
       object-fit: cover;
+      border: 1px solid #c8ccd1;
     }
 
     .change-photo {
       display: inline-block;
-      margin-top: 10px;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--cool);
+      margin-top: 8px;
+      font-size: 0.82rem;
+      color: #36c;
       cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 3px;
     }
+    .change-photo:hover { text-decoration: underline; }
 
-    /* ROAST BUTTON */
     .roast-btn {
       width: 100%;
-      margin-top: 20px;
-      padding: 18px 32px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 800;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: white;
-      background: linear-gradient(135deg, var(--fire), var(--lava));
+      margin-top: 16px;
+      padding: 14px 24px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      background: #1a1a1a;
       border: none;
-      border-radius: 14px;
+      border-radius: 2px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+      transition: all 0.2s ease;
     }
 
-    .roast-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, var(--ember), var(--fire));
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
+    .roast-btn:hover { background: #333; }
+    .roast-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
-    .roast-btn:hover::before { opacity: 1; }
-    .roast-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255, 77, 0, 0.3); }
-    .roast-btn:active { transform: translateY(0); }
-    .roast-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .roast-btn span { position: relative; z-index: 1; }
-
-    /* LOADING STATE */
     .loading-state {
       display: none;
       flex-direction: column;
       align-items: center;
-      gap: 20px;
-      margin-top: 40px;
+      gap: 12px;
+      margin-top: 32px;
       width: 100%;
     }
-
     .loading-state.active { display: flex; }
 
-    .flame-loader {
-      font-size: 3rem;
-      animation: flamePulse 0.6s ease-in-out infinite alternate;
+    .loader {
+      width: 28px; height: 28px;
+      border: 3px solid #eaecf0;
+      border-top: 3px solid #1a1a1a;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
     }
-
-    @keyframes flamePulse {
-      from { transform: scale(1) rotate(-5deg); filter: brightness(1); }
-      to { transform: scale(1.15) rotate(5deg); filter: brightness(1.3); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     .loading-text {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.85rem;
-      color: var(--ember);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.82rem;
+      color: #54595d;
     }
 
-    .loading-texts {
-      text-align: center;
+    .result-card { display: none; width: 100%; margin-top: 28px; }
+    .result-card.active { display: block; animation: fadeIn 0.4s ease both; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* RESULT CARD */
-    .result-card {
-      display: none;
-      width: 100%;
-      margin-top: 30px;
-      animation: cardIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    .result-box {
+      border: 1px solid #a2a9b1;
+      border-radius: 2px;
+      background: #fff;
     }
 
-    .result-card.active { display: block; }
-
-    @keyframes cardIn {
-      from { opacity: 0; transform: translateY(40px) scale(0.95); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .card-inner {
-      background: linear-gradient(180deg, var(--smoke) 0%, var(--ash) 100%);
-      border: 1px solid rgba(255, 77, 0, 0.15);
-      border-radius: 24px;
-      padding: 32px 28px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card-inner::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--fire), var(--ember), var(--lava), var(--fire));
-      background-size: 200% 100%;
-      animation: shimmer 3s linear infinite;
-    }
-
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    .card-header {
+    .result-header {
+      background: #f8f9fa;
+      border-bottom: 1px solid #a2a9b1;
+      padding: 10px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 24px;
     }
 
-    .card-brand {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--cool);
-      letter-spacing: 2px;
+    .result-header-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #54595d;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    /* PERSONALITY BADGE */
-    .personality-container {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 24px;
-    }
+    .result-body { padding: 20px; }
 
     .personality-badge {
       display: inline-block;
-      padding: 12px 24px;
-      background: rgba(255, 77, 0, 0.1);
-      border: 1px solid rgba(255, 77, 0, 0.25);
-      border-radius: 100px;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.9rem;
-      color: var(--ember);
-      text-align: center;
+      padding: 4px 12px;
+      background: #eaf3ff;
+      border: 1px solid #a7d0ff;
+      border-radius: 2px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #36c;
+      margin-bottom: 16px;
     }
 
-    /* ROAST TEXT */
     .roast-text {
-      font-size: 1.15rem;
-      line-height: 1.65;
-      color: var(--ice);
-      margin-bottom: 24px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #202122;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #eaecf0;
     }
 
-    .roast-text::before {
-      content: '"';
-      font-size: 3rem;
-      font-weight: 900;
-      color: var(--fire);
-      line-height: 0;
-      vertical-align: -0.5em;
-      margin-right: 4px;
-    }
-
-    .dating-forecast {
+    .forecast-section {
       display: flex;
       gap: 10px;
       align-items: flex-start;
-      padding: 16px;
-      background: rgba(255, 138, 0, 0.06);
-      border-radius: 12px;
-      border: 1px solid rgba(255, 138, 0, 0.15);
+      padding: 12px;
+      background: #f8f9fa;
+      border: 1px solid #eaecf0;
+      border-radius: 2px;
     }
 
-    .dating-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
-
-    .dating-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--ember);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 4px;
-    }
-
-    .dating-text {
-      font-size: 0.92rem;
-      color: var(--cool);
-      line-height: 1.5;
-    }
-
-    /* SHARE BUTTONS */
-    .share-section {
-      margin-top: 24px;
-      text-align: center;
-    }
-
-    .share-label {
-      font-family: 'Space Mono', monospace;
+    .forecast-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+    .forecast-label {
+      font-family: 'IBM Plex Mono', monospace;
       font-size: 0.7rem;
-      color: var(--cool);
+      color: #72777d;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 14px;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
     }
+    .forecast-text { font-size: 0.9rem; color: #54595d; line-height: 1.5; }
 
-    .share-buttons {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
+    .share-section {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #eaecf0;
     }
+    .share-label { font-size: 0.78rem; color: #72777d; margin-bottom: 10px; }
+
+    .share-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
 
     .share-btn {
-      padding: 12px 20px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--ice);
-      font-family: 'Space Mono', monospace;
-      font-size: 0.78rem;
+      padding: 8px 14px;
+      border-radius: 2px;
+      border: 1px solid #a2a9b1;
+      background: #f8f9fa;
+      color: #36c;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.85rem;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
     }
-
-    .share-btn:hover {
-      background: rgba(255, 77, 0, 0.1);
-      border-color: rgba(255, 77, 0, 0.3);
-      transform: translateY(-1px);
-    }
+    .share-btn:hover { background: #eaf3ff; border-color: #a7d0ff; }
 
     .try-again-btn {
-      margin-top: 20px;
-      padding: 16px 28px;
-      background: linear-gradient(135deg, var(--fire), var(--lava));
+      margin-top: 16px;
+      padding: 14px 24px;
+      background: #1a1a1a;
       border: none;
-      border-radius: 14px;
+      border-radius: 2px;
       color: white;
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 800;
-      letter-spacing: 0.5px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.3s;
       width: 100%;
     }
+    .try-again-btn:hover { background: #333; }
 
-    .try-again-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(255, 77, 0, 0.3);
-    }
+    .counter { margin-top: 32px; font-size: 0.78rem; color: #a2a9b1; }
+    .counter span { color: #54595d; font-weight: 600; }
 
-    /* COUNTER */
-    .counter {
-      margin-top: 40px;
-      text-align: center;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.72rem;
-      color: rgba(255, 255, 255, 0.2);
-      opacity: 0;
-      animation: fadeUp 0.6s 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
-
-    .counter span { color: var(--fire); font-weight: 700; }
-
-    /* FOOTER */
     .footer {
-      margin-top: auto;
-      padding-top: 40px;
-      text-align: center;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.68rem;
-      color: rgba(255, 255, 255, 0.15);
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid #eaecf0;
+      font-size: 0.75rem;
+      color: #a2a9b1;
     }
+    .footer a { color: #36c; text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
 
-    .footer a { color: rgba(255, 77, 0, 0.4); text-decoration: none; }
-
-    /* RESPONSIVE */
     @media (max-width: 480px) {
-      .logo { font-size: 2.4rem; }
-      .card-inner { padding: 24px 20px; }
-      .roast-text { font-size: 1.05rem; }
+      .logo { font-size: 1.6rem; }
+      .container { padding: 28px 16px 60px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <a href="/" class="logo-link" id="logoLink"><h1 class="logo">ROAST MY FRIDGE</h1></a>
-    <p class="tagline">Upload your fridge. Get destroyed by AI.</p>
+    <div class="header">
+      <a href="/" class="logo-link" id="logoLink"><h1 class="logo">Roast My Fridge</h1></a>
+      <p class="tagline">Upload any image and let AI roast it.</p>
+      <div class="disclaimer">⚠️ This tool uses artificial intelligence to generate humorous commentary about uploaded images. Results are algorithmically generated and should not be taken personally. Side effects may include involuntary laughter, existential reflection, and the urge to clean your fridge.</div>
+    </div>
+
+    <h2 class="section-heading">Submit image for analysis</h2>
 
     <div class="upload-zone" id="uploadZone">
-      <span class="upload-icon">🧊</span>
-      <p class="upload-text">Drop your fridge photo here</p>
-      <p class="upload-subtext">or anything else you dare · selfies · closets · desks · pets</p>
+      <span class="upload-icon">📎</span>
+      <p class="upload-text">Choose file or drag here</p>
+      <p class="upload-subtext">Accepts fridges, selfies, closets, desks, pets, and poor life decisions</p>
       <input type="file" id="fileInput" accept="image/*">
     </div>
 
-    <button class="roast-btn" id="roastBtn" disabled>
-      <span>🔥 ROAST MY FRIDGE 🔥</span>
-    </button>
+    <button class="roast-btn" id="roastBtn" disabled>Submit for Roasting</button>
 
     <div class="loading-state" id="loadingState">
-      <div class="flame-loader">🔥</div>
-      <div class="loading-texts">
-        <p class="loading-text" id="loadingText">Judging your life choices...</p>
-      </div>
+      <div class="loader"></div>
+      <p class="loading-text" id="loadingText">Processing image...</p>
     </div>
 
     <div class="result-card" id="resultCard">
-      <div class="card-inner">
-        <div class="card-header">
-          <span class="card-brand">Roast My Fridge</span>
-          <span class="card-brand">🔥</span>
+      <div class="result-box">
+        <div class="result-header">
+          <span class="result-header-title">Official Roast Report</span>
+          <span style="font-size: 0.75rem; color: #72777d;">Case #<span id="caseNumber">00000</span></span>
         </div>
-
-        <div class="personality-container">
+        <div class="result-body">
           <div class="personality-badge" id="personalityBadge"></div>
-        </div>
 
-        <div class="roast-text" id="roastText"></div>
+          <div class="roast-text" id="roastText"></div>
 
-        <div class="dating-forecast" id="forecastSection">
-          <span class="dating-icon" id="forecastIcon">🧠</span>
-          <div>
-            <div class="dating-label" id="forecastLabel">Forecast</div>
-            <div class="dating-text" id="forecastText"></div>
+          <div class="forecast-section">
+            <span class="forecast-icon" id="forecastIcon">💰</span>
+            <div>
+              <div class="forecast-label" id="forecastLabel">Financial Forecast</div>
+              <div class="forecast-text" id="forecastText"></div>
+            </div>
           </div>
-        </div>
 
-        <div class="share-section">
-          <p class="share-label">Share your shame</p>
-          <div class="share-buttons">
-            <a class="share-btn" id="shareTwitter" href="#" target="_blank">𝕏 Post</a>
-            <button class="share-btn" id="shareCopy">📋 Copy</button>
-            <button class="share-btn" id="shareNative">📤 Share</button>
+          <div class="share-section">
+            <p class="share-label">Distribute findings:</p>
+            <div class="share-buttons">
+              <a class="share-btn" id="shareTwitter" href="#" target="_blank">𝕏 Post</a>
+              <button class="share-btn" id="shareCopy">📋 Copy</button>
+              <button class="share-btn" id="shareNative">📤 Share</button>
+            </div>
           </div>
         </div>
       </div>
 
-      <button class="try-again-btn" id="tryAgainBtn">🔥 Roast Something Else 🔥</button>
+      <button class="try-again-btn" id="tryAgainBtn">Submit Another Image</button>
     </div>
 
     <div class="counter" id="counter">
-      <span id="roastCount">0</span> fridges roasted and counting
+      <span id="roastCount">0</span> images analyzed to date
     </div>
 
     <div class="footer">
-      powered by artificial savagery · <a href="https://roastmyfridge.lol">roastmyfridge.lol</a>
+      <a href="https://roastmyfridge.lol">roastmyfridge.lol</a> · est. 2026 · powered by questionable AI
     </div>
   </div>
 
   <script>
-    // State
     let imageData = null;
     let imageMediaType = null;
     let currentResult = null;
 
-    // Elements
     const uploadZone = document.getElementById('uploadZone');
     const fileInput = document.getElementById('fileInput');
     const roastBtn = document.getElementById('roastBtn');
@@ -566,31 +369,25 @@
     const loadingText = document.getElementById('loadingText');
     const resultCard = document.getElementById('resultCard');
 
-    // Loading messages
     const loadingMessages = [
-      "Judging your life choices...",
-      "Analyzing every detail...",
-      "This is worse than expected...",
-      "Consulting the roast gods...",
-      "Measuring sadness levels...",
-      "Evaluating your adulting skills...",
-      "Oh... oh no...",
-      "Writing your psychological profile...",
-      "Finding the perfect insult...",
-      "Your FBI agent is taking notes...",
+      "Processing image...",
+      "Running diagnostics...",
+      "Consulting the algorithm...",
+      "Cross-referencing database of poor choices...",
+      "Calibrating savagery...",
+      "Reviewing evidence...",
+      "Compiling report...",
+      "This is going to hurt...",
     ];
 
-    // Fake counter (start from a fun number, persist in session)
     let roastCount = parseInt(sessionStorage.getItem('roastCount')) || 14847;
     document.getElementById('roastCount').textContent = roastCount.toLocaleString();
 
-    // Logo click — go home
     document.getElementById('logoLink').addEventListener('click', (e) => {
       e.preventDefault();
       window.location.href = '/';
     });
 
-    // Upload handlers
     uploadZone.addEventListener('click', () => fileInput.click());
 
     uploadZone.addEventListener('dragover', (e) => {
@@ -606,9 +403,7 @@
       e.preventDefault();
       uploadZone.classList.remove('dragover');
       const file = e.dataTransfer.files[0];
-      if (file && file.type.startsWith('image/')) {
-        handleFile(file);
-      }
+      if (file && file.type.startsWith('image/')) handleFile(file);
     });
 
     fileInput.addEventListener('change', (e) => {
@@ -617,7 +412,6 @@
     });
 
     function handleFile(file) {
-      // Show loading state while processing
       uploadZone.classList.add('has-image');
       uploadZone.innerHTML = '<p class="upload-text">Processing photo...</p>';
 
@@ -625,7 +419,6 @@
       reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-          // Resize to max 600px on longest side (faster upload, still detailed enough)
           const MAX = 600;
           let w = img.width, h = img.height;
           if (w > h) { if (w > MAX) { h = h * MAX / w; w = MAX; } }
@@ -640,10 +433,9 @@
           imageData = compressed.split(',')[1];
           imageMediaType = 'image/jpeg';
 
-          // Show preview
           uploadZone.innerHTML = `
-            <img src="${compressed}" class="preview-img" alt="Your upload">
-            <span class="change-photo">tap to change photo</span>
+            <img src="${compressed}" class="preview-img" alt="Upload">
+            <span class="change-photo">change image</span>
             <input type="file" id="fileInput" accept="image/*" style="display:none">
           `;
 
@@ -661,16 +453,13 @@
       reader.readAsDataURL(file);
     }
 
-    // Roast!
     roastBtn.addEventListener('click', async () => {
       if (!imageData) return;
 
-      // Show loading
       roastBtn.style.display = 'none';
       resultCard.classList.remove('active');
       loadingState.classList.add('active');
 
-      // Cycle loading messages
       let msgIndex = 0;
       const msgInterval = setInterval(() => {
         msgIndex = (msgIndex + 1) % loadingMessages.length;
@@ -681,26 +470,21 @@
         const res = await fetch('/api/roast', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            image: imageData,
-            mediaType: imageMediaType,
-          }),
+          body: JSON.stringify({ image: imageData, mediaType: imageMediaType }),
         });
 
         if (!res.ok) throw new Error('Roast failed');
-
         const data = await res.json();
         if (data.error) throw new Error(data.error);
 
         currentResult = data;
         displayResult(data);
 
-        // Update counter
         roastCount += 1;
         sessionStorage.setItem('roastCount', roastCount);
         document.getElementById('roastCount').textContent = roastCount.toLocaleString();
       } catch (err) {
-        alert('The roast machine broke! Please try again. 🔥');
+        alert('Analysis failed. Please try again.');
         console.error(err);
         roastBtn.style.display = 'block';
       } finally {
@@ -710,45 +494,37 @@
     });
 
     function displayResult(data) {
-      document.getElementById('personalityBadge').textContent = data.personality || 'Certified Disaster';
-      document.getElementById('roastText').innerHTML = (data.roast || 'Your upload is beyond words.');
-
-      // Dynamic forecast
-      document.getElementById('forecastIcon').textContent = data.forecast_icon || '🔮';
-      document.getElementById('forecastLabel').textContent = data.forecast_label || 'Forecast';
-      document.getElementById('forecastText').textContent = data.forecast || 'No comment.';
+      document.getElementById('personalityBadge').textContent = data.personality || 'Unclassified';
+      document.getElementById('roastText').innerHTML = (data.roast || 'No comment.');
+      document.getElementById('forecastIcon').textContent = data.forecast_icon || '💰';
+      document.getElementById('forecastLabel').textContent = data.forecast_label || 'Financial Forecast';
+      document.getElementById('forecastText').textContent = data.forecast || 'Insufficient data.';
+      document.getElementById('caseNumber').textContent = String(Math.floor(Math.random() * 99999)).padStart(5, '0');
 
       resultCard.classList.add('active');
       resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // Share functions
     function getShareText() {
       if (!currentResult) return '';
-      return `AI roasted my ${(currentResult.subject || 'fridge').toLowerCase()} and called me "${currentResult.personality}" 💀🔥\n\n${currentResult.roast}\n\nGet roasted → ${window.location.href}`;
+      return `AI classified me as "${currentResult.personality}" 💀\n\n${currentResult.roast}\n\nGet your report → ${window.location.href}`;
     }
 
     document.getElementById('shareTwitter').addEventListener('click', (e) => {
       e.preventDefault();
-      const text = `AI roasted my ${(currentResult?.subject || 'fridge').toLowerCase()} and called me "${currentResult?.personality || ''}" 💀🔥\n\nGet roasted →`;
-      const url = window.location.href;
-      window.open(
-        `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
-        '_blank'
-      );
+      const text = `AI classified me as "${currentResult?.personality || ''}" 💀\n\nGet your report →`;
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`, '_blank');
     });
 
     document.getElementById('shareCopy').addEventListener('click', async () => {
-      const text = getShareText();
       try {
-        await navigator.clipboard.writeText(text);
+        await navigator.clipboard.writeText(getShareText());
         const btn = document.getElementById('shareCopy');
         btn.textContent = '✅ Copied!';
         setTimeout(() => btn.textContent = '📋 Copy', 2000);
       } catch {
-        // Fallback
         const ta = document.createElement('textarea');
-        ta.value = text;
+        ta.value = getShareText();
         document.body.appendChild(ta);
         ta.select();
         document.execCommand('copy');
@@ -758,20 +534,10 @@
 
     document.getElementById('shareNative').addEventListener('click', async () => {
       if (navigator.share) {
-        try {
-          await navigator.share({
-            title: 'Roast My Fridge 🔥',
-            text: getShareText(),
-            url: window.location.href,
-          });
-        } catch {}
-      } else {
-        // Fallback to copy
-        document.getElementById('shareCopy').click();
-      }
+        try { await navigator.share({ title: 'Roast My Fridge', text: getShareText(), url: window.location.href }); } catch {}
+      } else { document.getElementById('shareCopy').click(); }
     });
 
-    // Try again
     document.getElementById('tryAgainBtn').addEventListener('click', () => {
       window.location.href = '/';
     });
