@@ -790,7 +790,21 @@
     document.getElementById('tryAgainBtn').addEventListener('click', () => {
       resultCard.classList.remove('active');
       roastBtn.style.display = 'block';
-      roastBtn.disabled = false;
+      roastBtn.disabled = true;
+      imageData = null;
+      uploadZone.classList.remove('has-image');
+      uploadZone.innerHTML = `
+        <span class="upload-icon">🧊</span>
+        <p class="upload-text">Drop your fridge photo here</p>
+        <p class="upload-subtext">or anything else you dare · selfies · closets · desks · pets</p>
+        <input type="file" id="fileInput" accept="image/*" style="display:none">
+      `;
+      const newInput = uploadZone.querySelector('input[type="file"]');
+      uploadZone.addEventListener('click', () => newInput.click());
+      newInput.addEventListener('change', (ev) => {
+        const f = ev.target.files[0];
+        if (f) handleFile(f);
+      });
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   </script>
