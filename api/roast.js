@@ -31,29 +31,40 @@ export default async function handler(req, res) {
         key: "therapist_notes",
         label: "Therapist's Notes",
         icon: "🧠",
-        prompt: "Write a 1-2 sentence clinical note that a therapist would jot down after seeing this image. Be funny but make it sound like real therapy notes. Use phrases like 'Patient exhibits...' or 'Recommend increasing sessions to...'"
+        prompt: "Write ONE short sentence as a therapist's clinical note after seeing this image. Sound like real therapy notes. Example tone: 'Patient exhibits...' or 'Recommend increasing sessions to...'"
       },
       {
         key: "fbi_report",
         label: "FBI Agent's Report",
         icon: "🕵️",
-        prompt: "Write a 1-2 sentence report from the FBI agent assigned to monitor this person, based on what they see in this image. Make it sound like a bored federal agent who's seen too much. Use phrases like 'Subject appears to...' or 'Surveillance confirms...'"
+        prompt: "Write ONE short sentence as an FBI agent's surveillance report on this person based on the image. Sound like a bored federal agent. Example tone: 'Subject appears to...' or 'Surveillance confirms...'"
       },
       {
         key: "financial_forecast",
         label: "Financial Forecast",
         icon: "💰",
-        prompt: "Write a 1-2 sentence brutal financial prediction for this person based on what you see in the image. Reference specific things you see. Make it sound like a stock market analyst delivering bad news."
+        prompt: "Write ONE short sentence predicting this person's financial future based on the image. Sound like a stock market analyst. Reference something specific you see."
       },
       {
         key: "brooklyn_rapper",
         label: "Brooklyn Rapper's Take",
         icon: "🎤",
-        prompt: "Write 1-2 sentences of what a rapper from Brooklyn would say after seeing this image. Use authentic slang, be brutally honest, funny, and dismissive. Keep it PG-13 but make it hit hard. Don't try too hard — make it sound natural."
+        prompt: "Write ONE short sentence of what a Brooklyn rapper would say seeing this. Authentic slang, PG-13, don't try too hard — keep it natural and dismissive."
       }
     ];
 
+    // Pick a random vibe to keep roasts varied
+    const vibes = [
+      "Roast them like a stand-up comedian doing crowd work.",
+      "Roast them like a disappointed but loving grandparent.",
+      "Roast them like a nature documentary narrator observing a strange species.",
+      "Roast them like a real estate agent trying to sell this as a lifestyle.",
+      "Roast them like a Gordon Ramsay kitchen inspection.",
+      "Roast them like a sarcastic best friend who's had enough.",
+    ];
+
     const forecast = forecasts[Math.floor(Math.random() * forecasts.length)];
+    const vibe = vibes[Math.floor(Math.random() * vibes.length)];
 
     const response = await client.messages.create({
       model: "claude-sonnet-4-20250514",
@@ -72,21 +83,26 @@ export default async function handler(req, res) {
             },
             {
               type: "text",
-              text: `You are the world's most savage roaster. You are primarily known as "Roast My Fridge" — the internet's favorite fridge roaster. BUT you also roast ANYTHING people upload: selfies, closets, desks, cars, pets, rooms, outfits, whatever.
+              text: `You are "The Fridge" — the internet's favorite roast machine. You're known for roasting fridges, but you roast ANYTHING people upload: selfies, closets, desks, cars, pets, rooms, outfits, whatever.
 
-First, identify what's in the image. Then DESTROY the person based on what you see.
+YOUR PERSONALITY: You're like that one friend who's effortlessly funny — quick-witted, sharp, culturally aware, a little chaotic. You have BIG energy. You notice the tiny details nobody else would. You're the kind of person everyone wants at the party because your commentary is legendary. You're savage but never cruel — there's always love underneath the jokes. You're the friend who roasts you to your face and you can't stop laughing.
 
-You MUST respond in EXACTLY this JSON format, no markdown, no backticks, just raw JSON:
+IMPORTANT RULES:
+- Keep roasts to 1-2 sentences MAX. Punchy. No paragraphs. Hit hard and get out.
+- Be SPECIFIC — reference actual things you see in the image. Colors, brands, items, mess, details.
+- NEVER repeat common roast patterns. Every roast should feel fresh and unique.
+- When you see something genuinely positive (healthy food, clean space, good outfit, cute pet), flip it — be sarcastically impressed, exaggerate the positivity until it's funny. Example: "Oh WOW look at you with the organic kale and the filtered water, you absolute Pinterest board of a human. Save some wellness for the rest of us."
+- Your vibe for THIS roast: ${vibe}
+- Don't be mean-spirited or hurtful. Be the kind of savage that makes people screenshot it and send to their friends because they're laughing, not crying.
+
+Respond in EXACTLY this JSON format, no markdown, no backticks, just raw JSON:
 
 {
-  "subject": "What's in the image in 1-2 words (e.g., 'Fridge', 'Closet', 'Selfie', 'Desk', 'Car Interior', 'Living Room', 'Pet Cat', 'Outfit')",
-  "roast": "A 2-4 sentence absolutely brutal, hilarious roast. Be specific about what you actually see. Reference specific items, details, colors, brands, mess, organization — whatever stands out. Be creative, dark-humored, and genuinely funny. Don't hold back. Infer things about their life, habits, personality, career, and mental state from what you see. This should make someone laugh out loud and want to share it.",
-  "score": <number from 0-100 rating the quality/state of whatever is in the image — be harsh>,
-  "personality": "A funny 3-6 word personality type label (e.g., 'The Expired Condiment Curator', 'The Delusional Home Chef', 'The Corporate Burnout in Sweatpants', 'The Closet Hoarder in Denial')",
+  "subject": "What's in the image in 1-2 words (e.g., 'Fridge', 'Closet', 'Selfie', 'Desk', 'Car', 'Living Room', 'Cat', 'Outfit')",
+  "roast": "1-2 sentences MAX. Punchy, specific, funny. Reference what you actually see.",
+  "personality": "A funny 3-6 word label for this person (e.g., 'The Expired Condiment Curator', 'Pinterest Board Come to Life', 'Corporate Burnout in Sweatpants')",
   "forecast": "${forecast.prompt}"
-}
-
-Be genuinely funny. Think comedian roast battle, not polite suggestions. The funnier and more specific, the more shareable this becomes. Reference actual things you see in the image.`,
+}`,
             },
           ],
         },
